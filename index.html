@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Intellectuals Savings Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-pale: #F7EDD0;
+  --ink: #0F0D0A;
+  --ink-mid: #2C2416;
+  --ink-soft: #6B5F50;
+  --cream: #FAF6EF;
+  --cream-dark: #F0E9DC;
+  --green: #1E5C3A;
+  --green-light: #2D8A56;
+  --surface: #FFFFFF;
+  --blue-deep: #0B1C3A;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Outfit', sans-serif; background: var(--blue-deep); color: var(--cream); overflow-x: hidden; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #0B1C3A 0%, #0f2a50 50%, #0B1C3A 100%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(201,168,76,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(30,92,58,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+/* Decorative grid */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 60px;
+  position: relative;
+  z-index: 10;
+}
+.nav-logo { display: flex; align-items: center; gap: 14px; }
+.nav-logo .logo-mark {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--gold), #8B6914);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-size: 22px; color: white; font-weight: 900;
+}
+.nav-logo span { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--gold-light); letter-spacing: 0.02em; line-height: 1.2; }
+.nav-links { display: flex; align-items: center; gap: 8px; }
+.nav-link { color: rgba(255,255,255,0.6); font-size: 14px; font-weight: 500; text-decoration: none; padding: 8px 16px; border-radius: 8px; transition: all 0.2s; }
+.nav-link:hover { color: white; background: rgba(255,255,255,0.07); }
+.nav-cta { background: var(--gold); color: var(--ink); padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+.nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+/* HERO CONTENT */
+.hero-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 60px 60px 80px;
+  gap: 60px;
+  position: relative;
+  z-index: 5;
+}
+.hero-left { flex: 1; max-width: 560px; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.25);
+  padding: 6px 14px; border-radius: 99px; margin-bottom: 28px;
+}
+.hero-eyebrow span { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-light); }
+.dot-pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--green-light); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 900;
+  line-height: 1.08;
+  color: white;
+  margin-bottom: 24px;
+}
+h1 em { font-style: italic; color: var(--gold); }
+.hero-desc { font-size: 17px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 40px; max-width: 460px; }
+
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn-hero-primary {
+  background: var(--gold); color: var(--ink); font-family: 'Outfit', sans-serif;
+  font-size: 15px; font-weight: 600; padding: 14px 28px; border-radius: 10px;
+  text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+  border: none; cursor: pointer;
+}
+.btn-hero-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.3); }
+.btn-hero-ghost {
+  background: transparent; color: rgba(255,255,255,0.8);
+  border: 1.5px solid rgba(255,255,255,0.2); font-family: 'Outfit', sans-serif;
+  font-size: 15px; font-weight: 500; padding: 14px 28px; border-radius: 10px;
+  text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+  cursor: pointer;
+}
+.btn-hero-ghost:hover { border-color: rgba(255,255,255,0.5); color: white; background: rgba(255,255,255,0.05); }
+
+/* Stats row */
+.hero-stats { display: flex; gap: 40px; margin-top: 56px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.08); }
+.stat-item .num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--gold); }
+.stat-item .lbl { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* Hero right — floating card */
+.hero-right {
+  flex: 0 0 400px;
+  animation: floatUp 0.8s ease both;
+}
+@keyframes floatUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:none} }
+.auth-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 20px;
+  padding: 36px;
+  backdrop-filter: blur(20px);
+}
+.auth-tabs {
+  display: flex; gap: 4px; background: rgba(0,0,0,0.3); border-radius: 10px;
+  padding: 4px; margin-bottom: 28px;
+}
+.auth-tab {
+  flex: 1; padding: 10px; border-radius: 7px; font-size: 14px; font-weight: 600;
+  cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.45);
+  transition: all 0.2s; font-family: 'Outfit', sans-serif;
+}
+.auth-tab.active { background: var(--gold); color: var(--ink); }
+
+.auth-form { display: none; }
+.auth-form.active { display: block; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+.form-group { margin-bottom: 16px; }
+.form-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.45); display: block; margin-bottom: 7px; }
+.form-input {
+  width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px;
+  color: white; font-family: 'Outfit', sans-serif; font-size: 14px; outline: none;
+  transition: border-color 0.2s;
+}
+.form-input::placeholder { color: rgba(255,255,255,0.25); }
+.form-input:focus { border-color: var(--gold); background: rgba(201,168,76,0.06); }
+.form-input option { background: #0B1C3A; color: white; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.btn-submit {
+  width: 100%; padding: 13px; background: var(--gold); color: var(--ink);
+  border: none; border-radius: 8px; font-family: 'Outfit', sans-serif;
+  font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px;
+}
+.btn-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
+.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.btn-submit.loading::after { content:''; width:14px;height:14px;border:2px solid rgba(15,13,10,0.3);border-top-color:var(--ink);border-radius:50%;animation:spin .7s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+
+.auth-divider { text-align: center; color: rgba(255,255,255,0.25); font-size: 12px; margin: 16px 0; position: relative; }
+.auth-divider::before, .auth-divider::after { content:''; position:absolute; top:50%; width:40%; height:1px; background:rgba(255,255,255,0.1); }
+.auth-divider::before { left:0; } .auth-divider::after { right:0; }
+
+/* MOMO SECTION */
+.momo-section { margin-top: 20px; }
+.momo-title { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px; }
+.momo-providers { display: flex; gap: 10px; }
+.momo-btn {
+  flex: 1; padding: 10px 8px; border-radius: 8px; cursor: pointer; border: 1.5px solid;
+  font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.momo-mtn { background: rgba(255,200,0,0.08); border-color: rgba(255,200,0,0.3); color: #FFC800; }
+.momo-mtn:hover { background: rgba(255,200,0,0.15); border-color: #FFC800; }
+.momo-airtel { background: rgba(220,30,30,0.08); border-color: rgba(220,30,30,0.3); color: #F44; }
+.momo-airtel:hover { background: rgba(220,30,30,0.15); border-color: #F44; }
+
+.form-note { font-size: 11px; color: rgba(255,255,255,0.3); text-align: center; margin-top: 14px; line-height: 1.6; }
+.form-note a { color: var(--gold); text-decoration: none; }
+
+/* ── ABOUT SECTION ── */
+.about-section {
+  background: var(--cream);
+  color: var(--ink);
+  padding: 100px 60px;
+}
+.section-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+.section-title { font-family: 'Playfair Display', serif; font-size: clamp(32px, 4vw, 52px); font-weight: 900; line-height: 1.1; color: var(--ink); margin-bottom: 20px; }
+.section-desc { font-size: 16px; color: var(--ink-soft); line-height: 1.75; max-width: 520px; }
+
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.about-right { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.about-card {
+  background: white; border-radius: 14px; padding: 24px;
+  border: 1px solid var(--cream-dark); transition: all 0.2s;
+  animation: none;
+}
+.about-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.06); }
+.about-card .icon { font-size: 28px; margin-bottom: 12px; }
+.about-card h4 { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+.about-card p { font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
+
+/* ── HOW IT WORKS ── */
+.how-section {
+  background: #0B1C3A;
+  padding: 100px 60px;
+  position: relative;
+  overflow: hidden;
+}
+.how-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 56px; position: relative; }
+.how-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 16px; padding: 32px; position: relative;
+  transition: all 0.2s;
+}
+.how-card:hover { border-color: rgba(201,168,76,0.4); background: rgba(255,255,255,0.05); }
+.how-number {
+  font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900;
+  color: rgba(201,168,76,0.15); line-height: 1; margin-bottom: 20px;
+}
+.how-card h4 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--gold-light); margin-bottom: 10px; }
+.how-card p { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.7; }
+
+/* ── FINANCE HIGHLIGHT ── */
+.finance-section {
+  background: var(--cream);
+  padding: 100px 60px;
+  color: var(--ink);
+}
+.finance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-top: 56px; }
+.finance-card {
+  background: var(--blue-deep); border-radius: 20px; padding: 36px; color: white;
+}
+.finance-card h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold); margin-bottom: 24px; }
+.finance-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.finance-item:last-child { border: none; }
+.finance-item .fi-label { font-size: 13px; color: rgba(255,255,255,0.5); }
+.finance-item .fi-val { font-size: 15px; font-weight: 600; color: var(--gold-light); }
+.rules-list { list-style: none; }
+.rules-list li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--cream-dark); font-size: 14px; color: var(--ink-mid); line-height: 1.5; }
+.rules-list li:last-child { border: none; }
+.rules-list li::before { content: '✦'; color: var(--gold); flex-shrink: 0; margin-top: 1px; font-size: 10px; }
+
+/* ── MOMO MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  backdrop-filter: blur(8px);
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal-box {
+  background: #0f2a50; border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 20px; padding: 40px; width: 90%; max-width: 440px;
+  transform: scale(0.95) translateY(10px); transition: transform 0.25s;
+}
+.modal-overlay.open .modal-box { transform: none; }
+.modal-box h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold); margin-bottom: 6px; }
+.modal-box p { font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 24px; }
+.modal-close { float: right; background: none; border: none; color: rgba(255,255,255,0.4); font-size: 22px; cursor: pointer; margin-top: -8px; }
+.momo-network-pills { display: flex; gap: 10px; margin-bottom: 20px; }
+.network-pill {
+  flex: 1; padding: 12px; border-radius: 8px; cursor: pointer;
+  border: 2px solid; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
+  transition: all 0.15s; text-align: center;
+}
+.network-pill.mtn { border-color: rgba(255,200,0,0.3); color: #FFC800; background: rgba(255,200,0,0.06); }
+.network-pill.mtn.selected, .network-pill.mtn:hover { border-color: #FFC800; background: rgba(255,200,0,0.15); }
+.network-pill.airtel { border-color: rgba(220,30,30,0.3); color: #F55; background: rgba(220,30,30,0.06); }
+.network-pill.airtel.selected, .network-pill.airtel:hover { border-color: #F55; background: rgba(220,30,30,0.15); }
+.momo-status {
+  display: none; text-align: center; padding: 20px;
+  border-radius: 10px; margin-top: 16px;
+}
+.momo-status.pending { display: block; background: rgba(255,200,0,0.08); color: #FFC800; }
+.momo-status.success { display: block; background: rgba(30,92,58,0.2); color: var(--green-light); }
+.momo-status.error { display: block; background: rgba(220,30,30,0.12); color: #F55; }
+.spinner-sm { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,200,0,0.2); border-top-color: #FFC800; border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 8px; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink);
+  padding: 60px;
+  color: rgba(255,255,255,0.4);
+}
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; margin-bottom: 48px; }
+footer h4 { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--gold-light); margin-bottom: 16px; }
+footer p, footer li { font-size: 13px; line-height: 1.8; list-style: none; }
+footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+footer a:hover { color: var(--gold); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 28px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+.footer-logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--gold); margin-bottom: 12px; }
+
+/* TOAST */
+#toast-root { position: fixed; bottom: 28px; right: 28px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+.toast {
+  background: #0f2a50; border: 1px solid rgba(201,168,76,0.2);
+  color: white; padding: 14px 20px; border-radius: 12px; font-size: 13px;
+  display: flex; align-items: center; gap: 10px; min-width: 260px;
+  animation: slideUp 0.3s ease; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+.toast.success { border-left: 3px solid #2D8A56; }
+.toast.error { border-left: 3px solid #E05555; }
+.toast.info { border-left: 3px solid var(--gold); }
+@keyframes slideUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .hero-body { flex-direction: column; padding: 40px; }
+  .hero-right { flex: none; width: 100%; max-width: 460px; align-self: center; }
+  nav { padding: 20px 30px; }
+  .about-grid, .finance-grid { grid-template-columns: 1fr; gap: 40px; }
+  .how-grid { grid-template-columns: 1fr; }
+  .about-section, .how-section, .finance-section { padding: 60px 30px; }
+  footer { padding: 40px 30px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+@media (max-width: 640px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  .hero-body { padding: 20px 20px 40px; }
+  .hero-stats { gap: 24px; flex-wrap: wrap; }
+  .about-right { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .momo-providers { flex-direction: column; }
+  footer { padding: 32px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <nav>
+    <div class="nav-logo">
+      <div class="logo-mark">I</div>
+      <span>The Intellectuals<br>Savings Group</span>
+    </div>
+    <div class="nav-links">
+      <a href="#about" class="nav-link">About</a>
+      <a href="#how" class="nav-link">How It Works</a>
+      <a href="#finance" class="nav-link">Finances</a>
+      <a href="portal.html" class="nav-cta">Member Portal →</a>
+    </div>
+  </nav>
+
+  <div class="hero-body">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <div class="dot-pulse"></div>
+        <span>2026 First Cycle — Disbursement Today</span>
+      </div>
+      <h1>A family of <em>unity,</em><br>savings &amp; mutual<br>growth.</h1>
+      <p class="hero-desc">The Intellectuals Savings Group empowers students to build financial discipline, access credit, and grow together — socially, academically, and economically.</p>
+      <div class="hero-actions">
+        <button class="btn-hero-primary" onclick="switchTab('register')">Join the Group ↗</button>
+        <a href="#about" class="btn-hero-ghost">Learn More</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="num">20</div><div class="lbl">Max Members</div></div>
+        <div class="stat-item"><div class="num">UGX 1K</div><div class="lbl">Min / Week</div></div>
+        <div class="stat-item"><div class="num">75%</div><div class="lbl">Loan Eligibility</div></div>
+        <div class="stat-item"><div class="num">16</div><div class="lbl">Weeks / Cycle</div></div>
+      </div>
+    </div>
+
+    <!-- AUTH CARD -->
+    <div class="hero-right">
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button class="auth-tab active" onclick="switchTab('login')" id="tab-login">Login</button>
+          <button class="auth-tab" onclick="switchTab('register')" id="tab-register">Register</button>
+          <button class="auth-tab" onclick="switchTab('pay')" id="tab-pay">Pay / Save</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <div class="auth-form active" id="form-login">
+          <div class="form-group">
+            <label class="form-label">Membership ID or Email</label>
+            <input class="form-input" type="text" id="login-id" placeholder="e.g. INT-001 or your email"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password / PIN</label>
+            <input class="form-input" type="password" id="login-pass" placeholder="••••••••"/>
+          </div>
+          <button class="btn-submit" id="btn-login" onclick="doLogin()">
+            <span>Sign In to Portal</span>
+          </button>
+          <p class="form-note" style="margin-top:12px;">
+            New member? <a href="#" onclick="switchTab('register')">Register here</a> &nbsp;·&nbsp;
+            <a href="#" onclick="showForgot()">Forgot PIN?</a>
+          </p>
+        </div>
+
+        <!-- REGISTER FORM -->
+        <div class="auth-form" id="form-register">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">First Name</label>
+              <input class="form-input" type="text" id="reg-fname" placeholder="Agnes"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name</label>
+              <input class="form-input" type="text" id="reg-lname" placeholder="Nakimuli"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input class="form-input" type="email" id="reg-email" placeholder="you@example.com"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone (for Mobile Money)</label>
+            <input class="form-input" type="tel" id="reg-phone" placeholder="+256 700 000000"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">National ID</label>
+            <input class="form-input" type="text" id="reg-nid" placeholder="CM..."/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Create PIN</label>
+            <input class="form-input" type="password" id="reg-pin" placeholder="4-digit PIN" maxlength="6"/>
+          </div>
+
+          <!-- Registration fees via MoMo -->
+          <div class="momo-section">
+            <div class="momo-title">Pay Registration Fees via Mobile Money</div>
+            <p style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:10px;">Membership: UGX 5,000 + Capital Reserve: UGX 5,000 + Booklet: UGX 2,000 = <strong style="color:var(--gold)">UGX 12,000</strong></p>
+            <div class="momo-providers">
+              <button class="momo-btn momo-mtn" onclick="openMomo('register','MTN')">📱 MTN MoMo</button>
+              <button class="momo-btn momo-airtel" onclick="openMomo('register','Airtel')">📡 Airtel Money</button>
+            </div>
+          </div>
+          <p class="form-note">By registering, you agree to the group constitution and savings rules.</p>
+        </div>
+
+        <!-- PAY / SAVE FORM -->
+        <div class="auth-form" id="form-pay">
+          <div class="form-group">
+            <label class="form-label">Membership ID</label>
+            <input class="form-input" type="text" id="pay-id" placeholder="e.g. INT-001"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Amount (UGX)</label>
+            <input class="form-input" type="number" id="pay-amount" placeholder="e.g. 5000" min="1000"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Payment For</label>
+            <select class="form-input" id="pay-type">
+              <option value="weekly_savings">Weekly Savings</option>
+              <option value="fine">Fine Payment</option>
+              <option value="loan_repayment">Loan Repayment</option>
+            </select>
+          </div>
+          <div class="momo-section">
+            <div class="momo-title">Choose Payment Method</div>
+            <div class="momo-providers">
+              <button class="momo-btn momo-mtn" onclick="openMomo('pay','MTN')">📱 MTN MoMo</button>
+              <button class="momo-btn momo-airtel" onclick="openMomo('pay','Airtel')">📡 Airtel Money</button>
+            </div>
+          </div>
+          <p class="form-note">Your payment will be confirmed and recorded in the <a href="portal.html">member portal</a>.</p>
+        </div>
+
+      </div><!-- /auth-card -->
+    </div><!-- /hero-right -->
+  </div>
+</section>
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<section class="about-section" id="about">
+  <div class="about-grid">
+    <div>
+      <div class="section-eyebrow">Who We Are</div>
+      <h2 class="section-title">Built for students.<br>Driven by ambition.</h2>
+      <p class="section-desc">The Intellectuals Savings Group is a member-governed savings collective founded to foster financial discipline and mutual support among students. Every shilling saved here builds a stronger future for the whole family.</p>
+      <br/>
+      <p class="section-desc" style="margin-top:16px;">We operate with full transparency — every contribution is recorded, every loan is approved by the Finance Committee, and every cycle ends with a full disbursement and financial review.</p>
+    </div>
+    <div class="about-right">
+      <div class="about-card">
+        <div class="icon">💰</div>
+        <h4>Weekly Savings</h4>
+        <p>Minimum UGX 1,000 per week. Consistent saving builds your loan eligibility and end-of-cycle payout.</p>
+      </div>
+      <div class="about-card">
+        <div class="icon">🤝</div>
+        <h4>Mutual Support</h4>
+        <p>A welfare committee and emergency fund ensure no member is left behind in times of need.</p>
+      </div>
+      <div class="about-card">
+        <div class="icon">📈</div>
+        <h4>Credit Access</h4>
+        <p>Borrow up to 75% of your savings balance. Quick approval within 48 hours of application.</p>
+      </div>
+      <div class="about-card">
+        <div class="icon">🎓</div>
+        <h4>Academic Focus</h4>
+        <p>Financial stability lets you focus on what matters — your studies and personal growth.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+<section class="how-section" id="how">
+  <div style="position:relative;z-index:2;">
+    <div class="section-eyebrow" style="color:var(--gold)">The Process</div>
+    <h2 class="section-title" style="color:white;">How it works</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-number">01</div>
+        <h4>Register &amp; Onboard</h4>
+        <p>Pay your one-time membership fee of UGX 5,000, contribute UGX 5,000 to the Capital Reserve Fund, and purchase your savings booklet for UGX 2,000. You're officially an Intellectual.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-number">02</div>
+        <h4>Save Weekly</h4>
+        <p>Every Wednesday at 4:30 PM, attend the savings meeting and contribute a minimum of UGX 1,000. Savings are recorded in your booklet and the master ledger simultaneously.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-number">03</div>
+        <h4>Access Loans</h4>
+        <p>Apply to borrow up to 75% of your total savings. The Finance Committee reviews your request, and upon the President's approval, funds are disbursed within 48 hours.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-number">04</div>
+        <h4>Stay Accountable</h4>
+        <p>Punctuality, attendance, and contribution consistency are monitored. Fines keep the group disciplined and funds growing. The Disciplinary Committee handles any breaches.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-number">05</div>
+        <h4>Attend GMs</h4>
+        <p>Two mandatory General Meetings per cycle — one to set semester goals, one to review performance and distribute funds to all members.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-number">06</div>
+        <h4>Collect at Cycle End</h4>
+        <p>At the close of each 16-week cycle, all savings (minus fines and outstanding debts) are paid out. Your money, grown with discipline.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FINANCE ═══════════════ -->
+<section class="finance-section" id="finance">
+  <div class="section-eyebrow">Transparency First</div>
+  <h2 class="section-title">Financial Structure</h2>
+  <div class="finance-grid">
+    <div class="finance-card">
+      <h3>2026 First Cycle Snapshot</h3>
+      <div class="finance-item"><span class="fi-label">Cycle Period</span><span class="fi-val">11 Feb – 27 May 2026</span></div>
+      <div class="finance-item"><span class="fi-label">Disbursement Date</span><span class="fi-val">29 May 2026</span></div>
+      <div class="finance-item"><span class="fi-label">Weekly Minimum</span><span class="fi-val">UGX 1,000</span></div>
+      <div class="finance-item"><span class="fi-label">Total Weeks</span><span class="fi-val">16 Weeks</span></div>
+      <div class="finance-item"><span class="fi-label">Min Savings (Full Cycle)</span><span class="fi-val">UGX 16,000</span></div>
+      <div class="finance-item"><span class="fi-label">Max Loan (at min savings)</span><span class="fi-val">UGX 12,000</span></div>
+      <div class="finance-item"><span class="fi-label">Registration (One-time)</span><span class="fi-val">UGX 12,000 total</span></div>
+    </div>
+    <div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:20px;color:var(--ink)">Savings Rules at a Glance</h3>
+      <ul class="rules-list">
+        <li>Minimum contribution of UGX 1,000 every Wednesday at 4:30 PM.</li>
+        <li>Late arrival after 4:35 PM incurs a UGX 500 fine; significant lateness costs UGX 1,000.</li>
+        <li>Unexcused absence: UGX 2,000 fine plus the weekly savings still owed.</li>
+        <li>Absentee members still owe the weekly minimum unless excused by the group.</li>
+        <li>Loans require a written application to the Finance Committee for appraisal.</li>
+        <li>Early withdrawal requires 2-week notice (except verified emergencies).</li>
+        <li>Full savings paid out at the end of each cycle, minus outstanding fines or debts.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">The Intellectuals</div>
+      <p>A family of unity, savings, and support connected to grow socially, economically, academically and in all aspects of life.</p>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#finance">Finances</a></li>
+        <li><a href="portal.html">Member Portal</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Official Contacts</h4>
+      <ul>
+        <li>Secretary / Clerk</li>
+        <li><a href="tel:+256756199065">+256 756 199 065</a></li>
+        <li><a href="tel:+256767012770">+256 767 012 770</a></li>
+        <li style="margin-top:10px;">Minister of Finance</li>
+        <li><a href="tel:+256708837356">+256 708 837 356</a></li>
+        <li>Deputy Minister of Finance</li>
+        <li><a href="tel:+256767067150">+256 767 067 150</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 The Intellectuals Savings Group. All rights reserved.</span>
+    <a href="portal.html" style="color:var(--gold);font-weight:600;">Open Member Portal →</a>
+  </div>
+</footer>
+
+<!-- ═══════════════ MOMO MODAL ═══════════════ -->
+<div class="modal-overlay" id="momo-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeMomo()">×</button>
+    <h3 id="momo-title">Mobile Money Payment</h3>
+    <p id="momo-desc">Enter your mobile number to receive a payment prompt.</p>
+
+    <div class="momo-network-pills">
+      <div class="network-pill mtn selected" id="pill-mtn" onclick="selectNetwork('MTN')">📱 MTN MoMo</div>
+      <div class="network-pill airtel" id="pill-airtel" onclick="selectNetwork('Airtel')">📡 Airtel Money</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Mobile Number</label>
+      <input class="form-input" type="tel" id="momo-phone" placeholder="+256 700 000000"/>
+    </div>
+    <div class="form-group" id="momo-amount-group">
+      <label class="form-label">Amount (UGX)</label>
+      <input class="form-input" type="number" id="momo-amount" placeholder="e.g. 12000" min="1000"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Reference / Name</label>
+      <input class="form-input" type="text" id="momo-ref" placeholder="Your name or Membership ID"/>
+    </div>
+
+    <button class="btn-submit" id="momo-submit-btn" onclick="submitMomo()">Send Payment Prompt</button>
+
+    <div class="momo-status" id="momo-status"></div>
+  </div>
+</div>
+
+<div id="toast-root"></div>
+
+<script>
+// ─── STATE ───
+let momoContext = { type: '', network: 'MTN' };
+
+// ─── TABS ───
+function switchTab(tab) {
+  ['login','register','pay'].forEach(t => {
+    document.getElementById('form-'+t).classList.toggle('active', t===tab);
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+  });
+  if (tab === 'register' || tab === 'pay') {
+    document.querySelector('.auth-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+// ─── LOGIN ───
+function doLogin() {
+  const id = document.getElementById('login-id').value.trim();
+  const pass = document.getElementById('login-pass').value.trim();
+  if (!id || !pass) { toast('Please enter your ID and PIN.', 'error'); return; }
+
+  const btn = document.getElementById('btn-login');
+  btn.disabled = true;
+  btn.classList.add('loading');
+  btn.querySelector('span').textContent = 'Signing in...';
+
+  // Check saved config for Supabase, then redirect to portal
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+    btn.querySelector('span').textContent = 'Sign In to Portal';
+    // In a full integration, authenticate against Supabase here.
+    // For now, pass the ID to the portal via localStorage and redirect.
+    localStorage.setItem('isg_login_id', id);
+    toast('Welcome back! Redirecting to portal...', 'success');
+    setTimeout(() => { window.location.href = 'portal.html'; }, 1200);
+  }, 1400);
+}
+
+// ─── MOMO MODAL ───
+function openMomo(context, network) {
+  momoContext.type = context;
+  momoContext.network = network;
+
+  // Pre-fill amount for registration
+  if (context === 'register') {
+    document.getElementById('momo-title').textContent = 'Pay Registration Fees';
+    document.getElementById('momo-desc').textContent = 'UGX 12,000 covers your membership fee (5,000), Capital Reserve Fund (5,000), and savings booklet (2,000).';
+    document.getElementById('momo-amount').value = '12000';
+    document.getElementById('momo-amount').readOnly = true;
+    document.getElementById('momo-ref').value =
+      (document.getElementById('reg-fname').value + ' ' + document.getElementById('reg-lname').value).trim() || '';
+  } else {
+    document.getElementById('momo-title').textContent = 'Make a Payment';
+    document.getElementById('momo-desc').textContent = 'Enter your phone number to receive a payment prompt on your handset.';
+    const amt = document.getElementById('pay-amount')?.value;
+    document.getElementById('momo-amount').value = amt || '';
+    document.getElementById('momo-amount').readOnly = false;
+    document.getElementById('momo-ref').value = document.getElementById('pay-id')?.value || '';
+  }
+
+  // Pre-fill phone
+  const phone = document.getElementById('reg-phone')?.value || document.getElementById('momo-phone').value;
+  document.getElementById('momo-phone').value = phone;
+
+  selectNetwork(network);
+  document.getElementById('momo-status').className = 'momo-status';
+  document.getElementById('momo-status').textContent = '';
+  document.getElementById('momo-modal').classList.add('open');
+}
+
+function closeMomo() {
+  document.getElementById('momo-modal').classList.remove('open');
+}
+
+function selectNetwork(net) {
+  momoContext.network = net;
+  document.getElementById('pill-mtn').classList.toggle('selected', net === 'MTN');
+  document.getElementById('pill-airtel').classList.toggle('selected', net === 'Airtel');
+}
+
+function submitMomo() {
+  const phone = document.getElementById('momo-phone').value.trim();
+  const amount = document.getElementById('momo-amount').value;
+  const ref = document.getElementById('momo-ref').value.trim();
+
+  if (!phone || !amount) { toast('Phone number and amount are required.', 'error'); return; }
+  if (Number(amount) < 1000) { toast('Minimum payment is UGX 1,000.', 'error'); return; }
+
+  const btn = document.getElementById('momo-submit-btn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  const statusEl = document.getElementById('momo-status');
+  statusEl.className = 'momo-status pending';
+  statusEl.innerHTML = `<span class="spinner-sm"></span> Sending prompt to ${phone} via ${momoContext.network}...`;
+
+  // Simulate MoMo API call
+  // In production, call your backend which calls the MTN MoMo API or Airtel Money API
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+
+    // Simulate success
+    statusEl.className = 'momo-status success';
+    statusEl.innerHTML = `✅ Payment prompt sent! Check your phone (${phone}) and enter your ${momoContext.network} PIN to complete. Reference: <strong>${ref||'ISGRP'}</strong>`;
+
+    toast(`${momoContext.network} payment prompt sent to ${phone}`, 'success');
+
+    // If this was a registration, also submit the form after a delay
+    if (momoContext.type === 'register') {
+      setTimeout(() => {
+        submitRegistration();
+      }, 3000);
+    }
+  }, 2500);
+}
+
+function submitRegistration() {
+  const fname = document.getElementById('reg-fname').value.trim();
+  const lname = document.getElementById('reg-lname').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const phone = document.getElementById('reg-phone').value.trim();
+  const nid = document.getElementById('reg-nid').value.trim();
+
+  if (!fname || !lname || !email) {
+    toast('Please fill in your name and email before submitting.', 'error');
+    return;
+  }
+
+  // Save pending registration in localStorage, admin will confirm in portal
+  const pending = JSON.parse(localStorage.getItem('isg_pending_registrations') || '[]');
+  pending.push({
+    full_name: fname + ' ' + lname,
+    email, phone, national_id: nid,
+    status: 'pending_payment_verification',
+    applied_at: new Date().toISOString()
+  });
+  localStorage.setItem('isg_pending_registrations', JSON.stringify(pending));
+
+  toast('Registration submitted! An admin will confirm your membership after payment verification.', 'success');
+  closeMomo();
+}
+
+function showForgot() {
+  toast('Contact the Secretary/Clerk at +256 756 199 065 to reset your PIN.', 'info');
+}
+
+// ─── TOAST ───
+function toast(msg, type='info') {
+  const icons = { success:'✓', error:'✗', info:'ℹ' };
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<span>${icons[type]||'•'}</span> ${msg}`;
+  document.getElementById('toast-root').appendChild(t);
+  setTimeout(() => t.remove(), 5000);
+}
+
+// Close modal on backdrop click
+document.getElementById('momo-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('momo-modal')) closeMomo();
+});
+
+// Scroll animations
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='none'; } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.about-card,.how-card,.finance-card').forEach(el => {
+  el.style.opacity='0'; el.style.transform='translateY(20px)';
+  el.style.transition='opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
