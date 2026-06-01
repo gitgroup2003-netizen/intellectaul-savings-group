@@ -3,64 +3,52 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data:; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.emailjs.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com;">
 <title>The Intellectuals Savings Group</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <style>
 :root {
-  --gold: #C9A84C;
-  --gold-light: #E8C97A;
-  --gold-pale: #F7EDD0;
-  --ink: #0F0D0A;
-  --ink-mid: #2C2416;
-  --ink-soft: #6B5F50;
-  --cream: #FAF6EF;
-  --cream-dark: #F0E9DC;
-  --green: #1E5C3A;
-  --green-light: #2D8A56;
-  --surface: #FFFFFF;
-  --blue-deep: #0B1C3A;
+  --gold: #C9A84C; --gold-light: #E8C97A; --gold-pale: #F7EDD0;
+  --ink: #0F0D0A; --ink-mid: #2C2416; --ink-soft: #6B5F50;
+  --cream: #FAF6EF; --cream-dark: #F0E9DC;
+  --green: #1E5C3A; --green-light: #2D8A56;
+  --surface: #FFFFFF; --blue-deep: #0B1C3A; --red: #C0392B;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body { font-family: 'Outfit', sans-serif; background: var(--blue-deep); color: var(--cream); overflow-x: hidden; }
 
+/* ── SECURITY OVERLAY (rate limit / lockout) ── */
+#security-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999;
+  display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px;
+}
+#security-overlay.show { display: flex; }
+#security-overlay h2 { font-family: 'Playfair Display', serif; color: var(--red); font-size: 28px; }
+#security-overlay p { color: rgba(255,255,255,0.6); font-size: 14px; text-align: center; max-width: 360px; }
+#lockout-timer { font-size: 32px; font-family: 'Playfair Display', serif; color: var(--gold); }
+
 /* ── HERO ── */
 .hero {
-  min-height: 100vh;
-  background: linear-gradient(160deg, #0B1C3A 0%, #0f2a50 50%, #0B1C3A 100%);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  min-height: 100vh; background: linear-gradient(160deg, #0B1C3A 0%, #0f2a50 50%, #0B1C3A 100%);
+  position: relative; display: flex; flex-direction: column; overflow: hidden;
 }
 .hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(201,168,76,0.12) 0%, transparent 60%),
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 80% 20%, rgba(201,168,76,0.12) 0%, transparent 60%),
     radial-gradient(ellipse 40% 60% at 10% 80%, rgba(30,92,58,0.15) 0%, transparent 60%);
   pointer-events: none;
 }
-/* Decorative grid */
 .hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
+  content: ''; position: absolute; inset: 0;
   background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
+    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+  background-size: 60px 60px; pointer-events: none;
 }
-
-/* NAV */
 nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 28px 60px;
-  position: relative;
-  z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 28px 60px; position: relative; z-index: 10;
 }
 .nav-logo { display: flex; align-items: center; gap: 14px; }
 .nav-logo .logo-mark {
@@ -76,15 +64,9 @@ nav {
 .nav-cta { background: var(--gold); color: var(--ink); padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; transition: all 0.2s; }
 .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
 
-/* HERO CONTENT */
 .hero-body {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  padding: 60px 60px 80px;
-  gap: 60px;
-  position: relative;
-  z-index: 5;
+  flex: 1; display: flex; align-items: center;
+  padding: 60px 60px 80px; gap: 60px; position: relative; z-index: 5;
 }
 .hero-left { flex: 1; max-width: 560px; }
 .hero-eyebrow {
@@ -95,18 +77,9 @@ nav {
 .hero-eyebrow span { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-light); }
 .dot-pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--green-light); animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
-
-h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(36px, 5vw, 64px);
-  font-weight: 900;
-  line-height: 1.08;
-  color: white;
-  margin-bottom: 24px;
-}
+h1 { font-family: 'Playfair Display', serif; font-size: clamp(36px,5vw,64px); font-weight: 900; line-height: 1.08; color: white; margin-bottom: 24px; }
 h1 em { font-style: italic; color: var(--gold); }
 .hero-desc { font-size: 17px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 40px; max-width: 460px; }
-
 .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
 .btn-hero-primary {
   background: var(--gold); color: var(--ink); font-family: 'Outfit', sans-serif;
@@ -119,28 +92,18 @@ h1 em { font-style: italic; color: var(--gold); }
   background: transparent; color: rgba(255,255,255,0.8);
   border: 1.5px solid rgba(255,255,255,0.2); font-family: 'Outfit', sans-serif;
   font-size: 15px; font-weight: 500; padding: 14px 28px; border-radius: 10px;
-  text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
-  cursor: pointer;
+  text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
 }
 .btn-hero-ghost:hover { border-color: rgba(255,255,255,0.5); color: white; background: rgba(255,255,255,0.05); }
-
-/* Stats row */
 .hero-stats { display: flex; gap: 40px; margin-top: 56px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.08); }
 .stat-item .num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--gold); }
 .stat-item .lbl { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.08em; }
 
-/* Hero right — floating card */
-.hero-right {
-  flex: 0 0 400px;
-  animation: floatUp 0.8s ease both;
-}
+.hero-right { flex: 0 0 400px; animation: floatUp 0.8s ease both; }
 @keyframes floatUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:none} }
 .auth-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(201,168,76,0.2);
-  border-radius: 20px;
-  padding: 36px;
-  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 20px; padding: 36px; backdrop-filter: blur(20px);
 }
 .auth-tabs {
   display: flex; gap: 4px; background: rgba(0,0,0,0.3); border-radius: 10px;
@@ -152,25 +115,20 @@ h1 em { font-style: italic; color: var(--gold); }
   transition: all 0.2s; font-family: 'Outfit', sans-serif;
 }
 .auth-tab.active { background: var(--gold); color: var(--ink); }
-
 .auth-form { display: none; }
 .auth-form.active { display: block; animation: fadeIn 0.25s ease; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
-
 .form-group { margin-bottom: 16px; }
 .form-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.45); display: block; margin-bottom: 7px; }
 .form-input {
   width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.05);
   border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px;
-  color: white; font-family: 'Outfit', sans-serif; font-size: 14px; outline: none;
-  transition: border-color 0.2s;
+  color: white; font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s;
 }
 .form-input::placeholder { color: rgba(255,255,255,0.25); }
 .form-input:focus { border-color: var(--gold); background: rgba(201,168,76,0.06); }
 .form-input option { background: #0B1C3A; color: white; }
-
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
 .btn-submit {
   width: 100%; padding: 13px; background: var(--gold); color: var(--ink);
   border: none; border-radius: 8px; font-family: 'Outfit', sans-serif;
@@ -182,11 +140,15 @@ h1 em { font-style: italic; color: var(--gold); }
 .btn-submit.loading::after { content:''; width:14px;height:14px;border:2px solid rgba(15,13,10,0.3);border-top-color:var(--ink);border-radius:50%;animation:spin .7s linear infinite; }
 @keyframes spin { to{transform:rotate(360deg)} }
 
+/* LOGIN SECURITY */
+.login-attempts-warn { font-size: 11px; color: #F59E0B; text-align: center; margin-top: 8px; display: none; }
+.captcha-group { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.captcha-box { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 10px 16px; font-size: 18px; font-family: monospace; letter-spacing: 6px; color: white; user-select: none; flex-shrink: 0; }
+.captcha-refresh { background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 18px; padding: 4px; }
+
 .auth-divider { text-align: center; color: rgba(255,255,255,0.25); font-size: 12px; margin: 16px 0; position: relative; }
 .auth-divider::before, .auth-divider::after { content:''; position:absolute; top:50%; width:40%; height:1px; background:rgba(255,255,255,0.1); }
 .auth-divider::before { left:0; } .auth-divider::after { right:0; }
-
-/* MOMO SECTION */
 .momo-section { margin-top: 20px; }
 .momo-title { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px; }
 .momo-providers { display: flex; gap: 10px; }
@@ -199,72 +161,40 @@ h1 em { font-style: italic; color: var(--gold); }
 .momo-mtn:hover { background: rgba(255,200,0,0.15); border-color: #FFC800; }
 .momo-airtel { background: rgba(220,30,30,0.08); border-color: rgba(220,30,30,0.3); color: #F44; }
 .momo-airtel:hover { background: rgba(220,30,30,0.15); border-color: #F44; }
-
 .form-note { font-size: 11px; color: rgba(255,255,255,0.3); text-align: center; margin-top: 14px; line-height: 1.6; }
 .form-note a { color: var(--gold); text-decoration: none; }
 
-/* ── ABOUT SECTION ── */
-.about-section {
-  background: var(--cream);
-  color: var(--ink);
-  padding: 100px 60px;
-}
+/* ── ABOUT ── */
+.about-section { background: var(--cream); color: var(--ink); padding: 100px 60px; }
 .section-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
-.section-title { font-family: 'Playfair Display', serif; font-size: clamp(32px, 4vw, 52px); font-weight: 900; line-height: 1.1; color: var(--ink); margin-bottom: 20px; }
+.section-title { font-family: 'Playfair Display', serif; font-size: clamp(32px,4vw,52px); font-weight: 900; line-height: 1.1; color: var(--ink); margin-bottom: 20px; }
 .section-desc { font-size: 16px; color: var(--ink-soft); line-height: 1.75; max-width: 520px; }
-
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
 .about-right { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.about-card {
-  background: white; border-radius: 14px; padding: 24px;
-  border: 1px solid var(--cream-dark); transition: all 0.2s;
-  animation: none;
-}
+.about-card { background: white; border-radius: 14px; padding: 24px; border: 1px solid var(--cream-dark); transition: all 0.2s; }
 .about-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.06); }
 .about-card .icon { font-size: 28px; margin-bottom: 12px; }
 .about-card h4 { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
 .about-card p { font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
 
 /* ── HOW IT WORKS ── */
-.how-section {
-  background: #0B1C3A;
-  padding: 100px 60px;
-  position: relative;
-  overflow: hidden;
-}
+.how-section { background: #0B1C3A; padding: 100px 60px; position: relative; overflow: hidden; }
 .how-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+  content: ''; position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
   background-size: 60px 60px;
 }
-.how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 56px; position: relative; }
-.how-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(201,168,76,0.15);
-  border-radius: 16px; padding: 32px; position: relative;
-  transition: all 0.2s;
-}
+.how-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; margin-top: 56px; position: relative; }
+.how-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(201,168,76,0.15); border-radius: 16px; padding: 32px; transition: all 0.2s; }
 .how-card:hover { border-color: rgba(201,168,76,0.4); background: rgba(255,255,255,0.05); }
-.how-number {
-  font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900;
-  color: rgba(201,168,76,0.15); line-height: 1; margin-bottom: 20px;
-}
+.how-number { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; color: rgba(201,168,76,0.15); line-height: 1; margin-bottom: 20px; }
 .how-card h4 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--gold-light); margin-bottom: 10px; }
 .how-card p { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.7; }
 
-/* ── FINANCE HIGHLIGHT ── */
-.finance-section {
-  background: var(--cream);
-  padding: 100px 60px;
-  color: var(--ink);
-}
+/* ── FINANCE ── */
+.finance-section { background: var(--cream); padding: 100px 60px; color: var(--ink); }
 .finance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-top: 56px; }
-.finance-card {
-  background: var(--blue-deep); border-radius: 20px; padding: 36px; color: white;
-}
+.finance-card { background: var(--blue-deep); border-radius: 20px; padding: 36px; color: white; }
 .finance-card h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold); margin-bottom: 24px; }
 .finance-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
 .finance-item:last-child { border: none; }
@@ -277,16 +207,15 @@ h1 em { font-style: italic; color: var(--gold); }
 
 /* ── MOMO MODAL ── */
 .modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200;
+  position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 200;
   display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none; transition: opacity 0.25s;
-  backdrop-filter: blur(8px);
+  opacity: 0; pointer-events: none; transition: opacity 0.25s; backdrop-filter: blur(8px);
 }
 .modal-overlay.open { opacity: 1; pointer-events: all; }
 .modal-box {
   background: #0f2a50; border: 1px solid rgba(201,168,76,0.25);
-  border-radius: 20px; padding: 40px; width: 90%; max-width: 440px;
-  transform: scale(0.95) translateY(10px); transition: transform 0.25s;
+  border-radius: 20px; padding: 40px; width: 90%; max-width: 460px;
+  transform: scale(0.95) translateY(10px); transition: transform 0.25s; max-height: 90vh; overflow-y: auto;
 }
 .modal-overlay.open .modal-box { transform: none; }
 .modal-box h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold); margin-bottom: 6px; }
@@ -299,24 +228,26 @@ h1 em { font-style: italic; color: var(--gold); }
   transition: all 0.15s; text-align: center;
 }
 .network-pill.mtn { border-color: rgba(255,200,0,0.3); color: #FFC800; background: rgba(255,200,0,0.06); }
-.network-pill.mtn.selected, .network-pill.mtn:hover { border-color: #FFC800; background: rgba(255,200,0,0.15); }
+.network-pill.mtn.selected,.network-pill.mtn:hover { border-color: #FFC800; background: rgba(255,200,0,0.15); }
 .network-pill.airtel { border-color: rgba(220,30,30,0.3); color: #F55; background: rgba(220,30,30,0.06); }
-.network-pill.airtel.selected, .network-pill.airtel:hover { border-color: #F55; background: rgba(220,30,30,0.15); }
-.momo-status {
-  display: none; text-align: center; padding: 20px;
-  border-radius: 10px; margin-top: 16px;
-}
+.network-pill.airtel.selected,.network-pill.airtel:hover { border-color: #F55; background: rgba(220,30,30,0.15); }
+.momo-status { display: none; text-align: center; padding: 20px; border-radius: 10px; margin-top: 16px; font-size: 13px; line-height: 1.6; }
 .momo-status.pending { display: block; background: rgba(255,200,0,0.08); color: #FFC800; }
 .momo-status.success { display: block; background: rgba(30,92,58,0.2); color: var(--green-light); }
 .momo-status.error { display: block; background: rgba(220,30,30,0.12); color: #F55; }
 .spinner-sm { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,200,0,0.2); border-top-color: #FFC800; border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 8px; }
 
-/* ── FOOTER ── */
-footer {
-  background: var(--ink);
-  padding: 60px;
-  color: rgba(255,255,255,0.4);
+/* ── API CONFIG BANNER ── */
+.api-config-banner {
+  background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 10px; padding: 12px 16px; margin-bottom: 16px;
+  font-size: 12px; color: rgba(255,255,255,0.5); display: none;
 }
+.api-config-banner.show { display: block; }
+.api-config-banner a { color: var(--gold); cursor: pointer; text-decoration: underline; }
+
+/* ── FOOTER ── */
+footer { background: var(--ink); padding: 60px; color: rgba(255,255,255,0.4); }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; margin-bottom: 48px; }
 footer h4 { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--gold-light); margin-bottom: 16px; }
 footer p, footer li { font-size: 13px; line-height: 1.8; list-style: none; }
@@ -327,25 +258,19 @@ footer a:hover { color: var(--gold); }
 
 /* TOAST */
 #toast-root { position: fixed; bottom: 28px; right: 28px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
-.toast {
-  background: #0f2a50; border: 1px solid rgba(201,168,76,0.2);
-  color: white; padding: 14px 20px; border-radius: 12px; font-size: 13px;
-  display: flex; align-items: center; gap: 10px; min-width: 260px;
-  animation: slideUp 0.3s ease; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-}
+.toast { background: #0f2a50; border: 1px solid rgba(201,168,76,0.2); color: white; padding: 14px 20px; border-radius: 12px; font-size: 13px; display: flex; align-items: center; gap: 10px; min-width: 260px; animation: slideUp 0.3s ease; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
 .toast.success { border-left: 3px solid #2D8A56; }
 .toast.error { border-left: 3px solid #E05555; }
 .toast.info { border-left: 3px solid var(--gold); }
 @keyframes slideUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
 
-/* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
   .hero-body { flex-direction: column; padding: 40px; }
   .hero-right { flex: none; width: 100%; max-width: 460px; align-self: center; }
   nav { padding: 20px 30px; }
-  .about-grid, .finance-grid { grid-template-columns: 1fr; gap: 40px; }
+  .about-grid,.finance-grid { grid-template-columns: 1fr; gap: 40px; }
   .how-grid { grid-template-columns: 1fr; }
-  .about-section, .how-section, .finance-section { padding: 60px 30px; }
+  .about-section,.how-section,.finance-section { padding: 60px 30px; }
   footer { padding: 40px 30px; }
   .footer-grid { grid-template-columns: 1fr; gap: 32px; }
 }
@@ -362,6 +287,14 @@ footer a:hover { color: var(--gold); }
 </style>
 </head>
 <body>
+
+<!-- Security overlay for lockout -->
+<div id="security-overlay">
+  <h2>🔒 Access Temporarily Locked</h2>
+  <p>Too many failed login attempts detected. Please wait before trying again.</p>
+  <div id="lockout-timer">--:--</div>
+  <p style="font-size:11px;color:rgba(255,255,255,0.3)">This protects group members' financial data.</p>
+</div>
 
 <!-- ═══════════════ HERO ═══════════════ -->
 <section class="hero">
@@ -411,12 +344,22 @@ footer a:hover { color: var(--gold); }
         <div class="auth-form active" id="form-login">
           <div class="form-group">
             <label class="form-label">Membership ID or Email</label>
-            <input class="form-input" type="text" id="login-id" placeholder="e.g. INT-001 or your email"/>
+            <input class="form-input" type="text" id="login-id" placeholder="e.g. INT-001" autocomplete="username" maxlength="60"/>
           </div>
           <div class="form-group">
             <label class="form-label">Password / PIN</label>
-            <input class="form-input" type="password" id="login-pass" placeholder="••••••••"/>
+            <input class="form-input" type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" maxlength="20"/>
           </div>
+          <!-- CAPTCHA after 2 fails -->
+          <div id="captcha-group" style="display:none;margin-bottom:16px;">
+            <label class="form-label">Security Check — Type the code below</label>
+            <div class="captcha-group">
+              <div class="captcha-box" id="captcha-display">------</div>
+              <button class="captcha-refresh" onclick="refreshCaptcha()" title="New code">↻</button>
+            </div>
+            <input class="form-input" type="text" id="captcha-input" placeholder="Enter code above" maxlength="6" autocomplete="off"/>
+          </div>
+          <div class="login-attempts-warn" id="attempts-warn"></div>
           <button class="btn-submit" id="btn-login" onclick="doLogin()">
             <span>Sign In to Portal</span>
           </button>
@@ -428,34 +371,19 @@ footer a:hover { color: var(--gold); }
 
         <!-- REGISTER FORM -->
         <div class="auth-form" id="form-register">
+          <div class="api-config-banner show" id="reg-banner">
+            ⚠️ Configure your Supabase URL &amp; keys in <a onclick="window.location.href='portal.html'">Setup</a> before registrations go live.
+          </div>
           <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">First Name</label>
-              <input class="form-input" type="text" id="reg-fname" placeholder="Agnes"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Last Name</label>
-              <input class="form-input" type="text" id="reg-lname" placeholder="Nakimuli"/>
-            </div>
+            <div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" id="reg-fname" placeholder="Agnes" maxlength="40"/></div>
+            <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" id="reg-lname" placeholder="Nakimuli" maxlength="40"/></div>
           </div>
-          <div class="form-group">
-            <label class="form-label">Email Address</label>
-            <input class="form-input" type="email" id="reg-email" placeholder="you@example.com"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Phone (for Mobile Money)</label>
-            <input class="form-input" type="tel" id="reg-phone" placeholder="+256 700 000000"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">National ID</label>
-            <input class="form-input" type="text" id="reg-nid" placeholder="CM..."/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Create PIN</label>
-            <input class="form-input" type="password" id="reg-pin" placeholder="4-digit PIN" maxlength="6"/>
-          </div>
+          <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" type="email" id="reg-email" placeholder="you@example.com" maxlength="80"/></div>
+          <div class="form-group"><label class="form-label">Phone (for Mobile Money)</label><input class="form-input" type="tel" id="reg-phone" placeholder="+256 700 000000" maxlength="20"/></div>
+          <div class="form-group"><label class="form-label">National ID</label><input class="form-input" type="text" id="reg-nid" placeholder="CM..." maxlength="30"/></div>
+          <div class="form-group"><label class="form-label">Create PIN (6 digits)</label><input class="form-input" type="password" id="reg-pin" placeholder="6-digit PIN" maxlength="6" pattern="[0-9]{6}"/></div>
+          <div class="form-group"><label class="form-label">Confirm PIN</label><input class="form-input" type="password" id="reg-pin2" placeholder="Repeat PIN" maxlength="6"/></div>
 
-          <!-- Registration fees via MoMo -->
           <div class="momo-section">
             <div class="momo-title">Pay Registration Fees via Mobile Money</div>
             <p style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:10px;">Membership: UGX 5,000 + Capital Reserve: UGX 5,000 + Booklet: UGX 2,000 = <strong style="color:var(--gold)">UGX 12,000</strong></p>
@@ -464,19 +392,13 @@ footer a:hover { color: var(--gold); }
               <button class="momo-btn momo-airtel" onclick="openMomo('register','Airtel')">📡 Airtel Money</button>
             </div>
           </div>
-          <p class="form-note">By registering, you agree to the group constitution and savings rules.</p>
+          <p class="form-note">By registering you agree to the group constitution and savings rules. Your account requires admin verification before activation.</p>
         </div>
 
         <!-- PAY / SAVE FORM -->
         <div class="auth-form" id="form-pay">
-          <div class="form-group">
-            <label class="form-label">Membership ID</label>
-            <input class="form-input" type="text" id="pay-id" placeholder="e.g. INT-001"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Amount (UGX)</label>
-            <input class="form-input" type="number" id="pay-amount" placeholder="e.g. 5000" min="1000"/>
-          </div>
+          <div class="form-group"><label class="form-label">Membership ID</label><input class="form-input" type="text" id="pay-id" placeholder="e.g. INT-001" maxlength="20"/></div>
+          <div class="form-group"><label class="form-label">Amount (UGX)</label><input class="form-input" type="number" id="pay-amount" placeholder="e.g. 5000" min="1000" max="10000000"/></div>
           <div class="form-group">
             <label class="form-label">Payment For</label>
             <select class="form-input" id="pay-type">
@@ -492,11 +414,11 @@ footer a:hover { color: var(--gold); }
               <button class="momo-btn momo-airtel" onclick="openMomo('pay','Airtel')">📡 Airtel Money</button>
             </div>
           </div>
-          <p class="form-note">Your payment will be confirmed and recorded in the <a href="portal.html">member portal</a>.</p>
+          <p class="form-note">Payments are recorded in real-time. Admins are notified of every transaction.</p>
         </div>
 
-      </div><!-- /auth-card -->
-    </div><!-- /hero-right -->
+      </div>
+    </div>
   </div>
 </section>
 
@@ -511,26 +433,10 @@ footer a:hover { color: var(--gold); }
       <p class="section-desc" style="margin-top:16px;">We operate with full transparency — every contribution is recorded, every loan is approved by the Finance Committee, and every cycle ends with a full disbursement and financial review.</p>
     </div>
     <div class="about-right">
-      <div class="about-card">
-        <div class="icon">💰</div>
-        <h4>Weekly Savings</h4>
-        <p>Minimum UGX 1,000 per week. Consistent saving builds your loan eligibility and end-of-cycle payout.</p>
-      </div>
-      <div class="about-card">
-        <div class="icon">🤝</div>
-        <h4>Mutual Support</h4>
-        <p>A welfare committee and emergency fund ensure no member is left behind in times of need.</p>
-      </div>
-      <div class="about-card">
-        <div class="icon">📈</div>
-        <h4>Credit Access</h4>
-        <p>Borrow up to 75% of your savings balance. Quick approval within 48 hours of application.</p>
-      </div>
-      <div class="about-card">
-        <div class="icon">🎓</div>
-        <h4>Academic Focus</h4>
-        <p>Financial stability lets you focus on what matters — your studies and personal growth.</p>
-      </div>
+      <div class="about-card"><div class="icon">💰</div><h4>Weekly Savings</h4><p>Minimum UGX 1,000 per week. Consistent saving builds your loan eligibility and end-of-cycle payout.</p></div>
+      <div class="about-card"><div class="icon">🤝</div><h4>Mutual Support</h4><p>A welfare committee and emergency fund ensure no member is left behind in times of need.</p></div>
+      <div class="about-card"><div class="icon">📈</div><h4>Credit Access</h4><p>Borrow up to 75% of your savings balance. Quick approval within 48 hours of application.</p></div>
+      <div class="about-card"><div class="icon">🎓</div><h4>Academic Focus</h4><p>Financial stability lets you focus on what matters — your studies and personal growth.</p></div>
     </div>
   </div>
 </section>
@@ -541,36 +447,12 @@ footer a:hover { color: var(--gold); }
     <div class="section-eyebrow" style="color:var(--gold)">The Process</div>
     <h2 class="section-title" style="color:white;">How it works</h2>
     <div class="how-grid">
-      <div class="how-card">
-        <div class="how-number">01</div>
-        <h4>Register &amp; Onboard</h4>
-        <p>Pay your one-time membership fee of UGX 5,000, contribute UGX 5,000 to the Capital Reserve Fund, and purchase your savings booklet for UGX 2,000. You're officially an Intellectual.</p>
-      </div>
-      <div class="how-card">
-        <div class="how-number">02</div>
-        <h4>Save Weekly</h4>
-        <p>Every Wednesday at 4:30 PM, attend the savings meeting and contribute a minimum of UGX 1,000. Savings are recorded in your booklet and the master ledger simultaneously.</p>
-      </div>
-      <div class="how-card">
-        <div class="how-number">03</div>
-        <h4>Access Loans</h4>
-        <p>Apply to borrow up to 75% of your total savings. The Finance Committee reviews your request, and upon the President's approval, funds are disbursed within 48 hours.</p>
-      </div>
-      <div class="how-card">
-        <div class="how-number">04</div>
-        <h4>Stay Accountable</h4>
-        <p>Punctuality, attendance, and contribution consistency are monitored. Fines keep the group disciplined and funds growing. The Disciplinary Committee handles any breaches.</p>
-      </div>
-      <div class="how-card">
-        <div class="how-number">05</div>
-        <h4>Attend GMs</h4>
-        <p>Two mandatory General Meetings per cycle — one to set semester goals, one to review performance and distribute funds to all members.</p>
-      </div>
-      <div class="how-card">
-        <div class="how-number">06</div>
-        <h4>Collect at Cycle End</h4>
-        <p>At the close of each 16-week cycle, all savings (minus fines and outstanding debts) are paid out. Your money, grown with discipline.</p>
-      </div>
+      <div class="how-card"><div class="how-number">01</div><h4>Register &amp; Onboard</h4><p>Pay your one-time membership fee of UGX 5,000, contribute UGX 5,000 to the Capital Reserve Fund, and purchase your savings booklet for UGX 2,000. You're officially an Intellectual.</p></div>
+      <div class="how-card"><div class="how-number">02</div><h4>Save Weekly</h4><p>Every Wednesday at 4:30 PM, attend the savings meeting and contribute a minimum of UGX 1,000. Savings are recorded in your booklet and master ledger simultaneously.</p></div>
+      <div class="how-card"><div class="how-number">03</div><h4>Access Loans</h4><p>Apply to borrow up to 75% of your total savings. The Finance Committee reviews your request, and upon the President's approval, funds are disbursed within 48 hours.</p></div>
+      <div class="how-card"><div class="how-number">04</div><h4>Stay Accountable</h4><p>Punctuality, attendance, and contribution consistency are monitored. Fines keep the group disciplined and funds growing. The Disciplinary Committee handles any breaches.</p></div>
+      <div class="how-card"><div class="how-number">05</div><h4>Attend GMs</h4><p>Two mandatory General Meetings per cycle — one to set semester goals, one to review performance and distribute funds to all members.</p></div>
+      <div class="how-card"><div class="how-number">06</div><h4>Collect at Cycle End</h4><p>At the close of each 16-week cycle, all savings (minus fines and outstanding debts) are paid out. Your money, grown with discipline.</p></div>
     </div>
   </div>
 </section>
@@ -653,90 +535,309 @@ footer a:hover { color: var(--gold); }
     </div>
 
     <div class="form-group">
-      <label class="form-label">Mobile Number</label>
-      <input class="form-input" type="tel" id="momo-phone" placeholder="+256 700 000000"/>
+      <label class="form-label">Mobile Number (Uganda)</label>
+      <input class="form-input" type="tel" id="momo-phone" placeholder="e.g. 0765602223 or 256765602223" maxlength="15"/>
     </div>
     <div class="form-group" id="momo-amount-group">
       <label class="form-label">Amount (UGX)</label>
-      <input class="form-input" type="number" id="momo-amount" placeholder="e.g. 12000" min="1000"/>
+      <input class="form-input" type="number" id="momo-amount" placeholder="e.g. 12000" min="1000" max="5000000"/>
     </div>
     <div class="form-group">
-      <label class="form-label">Reference / Name</label>
-      <input class="form-input" type="text" id="momo-ref" placeholder="Your name or Membership ID"/>
+      <label class="form-label">Your Name / Membership ID</label>
+      <input class="form-input" type="text" id="momo-ref" placeholder="Agnes Nakimuli / INT-001" maxlength="60"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Purpose</label>
+      <select class="form-input" id="momo-purpose">
+        <option value="registration">Registration Fees</option>
+        <option value="weekly_savings">Weekly Savings</option>
+        <option value="fine">Fine Payment</option>
+        <option value="loan_repayment">Loan Repayment</option>
+      </select>
     </div>
 
-    <button class="btn-submit" id="momo-submit-btn" onclick="submitMomo()">Send Payment Prompt</button>
+    <!-- Merchant account display -->
+    <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:rgba(255,255,255,0.5);">
+      <strong style="color:var(--gold-light);">Sending to:</strong> The Intellectuals SG<br>
+      <span id="merchant-display">Merchant / Number: <strong style="color:white;">0765602223</strong></span>
+    </div>
+
+    <button class="btn-submit" id="momo-submit-btn" onclick="submitMomo()">
+      <span>Send Payment Prompt to My Phone</span>
+    </button>
 
     <div class="momo-status" id="momo-status"></div>
+    <p class="form-note" style="margin-top:14px;">You will receive a USSD prompt on your phone. Enter your MoMo PIN to complete the payment. Do NOT share your PIN with anyone.</p>
   </div>
 </div>
 
 <div id="toast-root"></div>
 
 <script>
-// ─── STATE ───
-let momoContext = { type: '', network: 'MTN' };
+// ═══════════════════════════════════════════════════════════════
+// CONFIGURATION — Fill these in the portal Setup page or here
+// ═══════════════════════════════════════════════════════════════
+const CONFIG = {
+  // Supabase
+  supabaseUrl: localStorage.getItem('sg_url') || '',
+  supabaseKey: localStorage.getItem('sg_key') || '',
 
-// ─── TABS ───
+  // MTN MoMo API (get from momodeveloper.mtn.com)
+  // After getting credentials, store via portal Setup or fill here
+  mtnCollectionsUrl: 'https://sandbox.momodeveloper.mtn.com/collection/v1_0',
+  mtnApiUser: localStorage.getItem('mtn_api_user') || '',
+  mtnApiKey: localStorage.getItem('mtn_api_key') || '',
+  mtnSubscriptionKey: localStorage.getItem('mtn_subscription_key') || '',
+  mtnTargetEnv: localStorage.getItem('mtn_env') || 'sandbox', // 'sandbox' or 'mtnuganda'
+
+  // Airtel Money Uganda API
+  airtelBaseUrl: 'https://openapi.airtel.africa',
+  airtelClientId: localStorage.getItem('airtel_client_id') || '',
+  airtelClientSecret: localStorage.getItem('airtel_client_secret') || '',
+  airtelCountry: 'UG', airtelCurrency: 'UGX',
+
+  // Group merchant / collection number
+  groupPhone: '256765602223',
+  groupMerchantCode: localStorage.getItem('merchant_code') || '256765602223',
+
+  // EmailJS (emailjs.com — free tier)
+  emailjsServiceId: localStorage.getItem('emailjs_service') || '',
+  emailjsTemplateId: localStorage.getItem('emailjs_template') || '',
+  emailjsPublicKey: localStorage.getItem('emailjs_key') || '',
+
+  // Notification targets
+  notifyEmail: 'gitgroup2003@gmail.com',
+  notifyWhatsApp: '256765602223', // CallMeBot API number
+
+  // CallMeBot WhatsApp API key (register at callmebot.com)
+  callmebotApiKey: localStorage.getItem('callmebot_key') || ''
+};
+
+// ═══════════════════════════════════════════════════════════════
+// SECURITY — Rate limiting & brute-force protection
+// ═══════════════════════════════════════════════════════════════
+const SEC = {
+  loginAttempts: parseInt(sessionStorage.getItem('login_attempts')||'0'),
+  lockoutUntil: parseInt(sessionStorage.getItem('lockout_until')||'0'),
+  captchaCode: '',
+
+  sanitize(str) {
+    return String(str||'').replace(/[<>"'&;]/g,'').trim().slice(0,200);
+  },
+  sanitizeNum(n) {
+    const v = parseFloat(String(n||'0').replace(/[^0-9.]/g,''));
+    return isNaN(v) ? 0 : Math.min(v, 10000000);
+  },
+  sanitizePhone(p) {
+    return String(p||'').replace(/[^0-9+]/g,'').slice(0,15);
+  },
+  isLocked() {
+    return Date.now() < this.lockoutUntil;
+  },
+  recordFail() {
+    this.loginAttempts++;
+    sessionStorage.setItem('login_attempts', this.loginAttempts);
+    if (this.loginAttempts >= 5) {
+      this.lockoutUntil = Date.now() + 5*60*1000; // 5 min
+      sessionStorage.setItem('lockout_until', this.lockoutUntil);
+      showSecurityOverlay();
+    } else if (this.loginAttempts >= 2) {
+      document.getElementById('captcha-group').style.display = 'block';
+      refreshCaptcha();
+    }
+    const warn = document.getElementById('attempts-warn');
+    const rem = 5 - this.loginAttempts;
+    if (rem > 0) { warn.style.display='block'; warn.textContent=`⚠ ${rem} attempt(s) remaining before temporary lockout`; }
+  },
+  resetFails() {
+    this.loginAttempts = 0;
+    this.lockoutUntil = 0;
+    sessionStorage.removeItem('login_attempts');
+    sessionStorage.removeItem('lockout_until');
+  }
+};
+
+function generateCaptcha() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for(let i=0;i<6;i++) code += chars[Math.floor(Math.random()*chars.length)];
+  return code;
+}
+function refreshCaptcha() {
+  SEC.captchaCode = generateCaptcha();
+  document.getElementById('captcha-display').textContent = SEC.captchaCode;
+  document.getElementById('captcha-input').value = '';
+}
+refreshCaptcha();
+
+// Lockout overlay
+let lockoutInterval;
+function showSecurityOverlay() {
+  document.getElementById('security-overlay').classList.add('show');
+  lockoutInterval = setInterval(() => {
+    const rem = Math.max(0, SEC.lockoutUntil - Date.now());
+    const m = Math.floor(rem/60000), s = Math.floor((rem%60000)/1000);
+    document.getElementById('lockout-timer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    if (rem <= 0) {
+      clearInterval(lockoutInterval);
+      document.getElementById('security-overlay').classList.remove('show');
+      SEC.resetFails();
+      document.getElementById('captcha-group').style.display = 'none';
+      document.getElementById('attempts-warn').style.display = 'none';
+    }
+  }, 1000);
+}
+if (SEC.isLocked()) showSecurityOverlay();
+
+// ═══════════════════════════════════════════════════════════════
+// SUPABASE HELPERS
+// ═══════════════════════════════════════════════════════════════
+async function sbFetch(path, options={}) {
+  const url = CONFIG.supabaseUrl, key = CONFIG.supabaseKey;
+  if(!url||!key) return null;
+  const base = url.replace(/\/+$/,'').replace(/\/rest\/v1$/,'');
+  const res = await fetch(`${base}/rest/v1${path}`, {
+    ...options,
+    headers: { 'Content-Type':'application/json', apikey:key, Authorization:`Bearer ${key}`, 'Prefer':'return=representation', ...(options.headers||{}) }
+  });
+  if (!res.ok) { const e=await res.json().catch(()=>({})); throw new Error(e.message||'HTTP '+res.status); }
+  const t = await res.text();
+  return t ? JSON.parse(t) : null;
+}
+async function sbInsert(table, data) { return sbFetch(`/${table}`, {method:'POST', body:JSON.stringify(data)}); }
+async function sbSelect(table, params={}) {
+  const q = [];
+  if(params.eq) Object.entries(params.eq).forEach(([k,v])=>q.push(`${k}=eq.${encodeURIComponent(v)}`));
+  if(params.filter) q.push(params.filter);
+  const qs = q.length ? '?'+q.join('&') : '';
+  return sbFetch(`/${table}${qs}`, {method:'GET'});
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════════════════
 function switchTab(tab) {
   ['login','register','pay'].forEach(t => {
     document.getElementById('form-'+t).classList.toggle('active', t===tab);
     document.getElementById('tab-'+t).classList.toggle('active', t===tab);
   });
-  if (tab === 'register' || tab === 'pay') {
-    document.querySelector('.auth-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
 }
 
-// ─── LOGIN ───
-function doLogin() {
-  const id = document.getElementById('login-id').value.trim();
-  const pass = document.getElementById('login-pass').value.trim();
-  if (!id || !pass) { toast('Please enter your ID and PIN.', 'error'); return; }
+// ═══════════════════════════════════════════════════════════════
+// LOGIN — with security checks
+// ═══════════════════════════════════════════════════════════════
+async function doLogin() {
+  if (SEC.isLocked()) { showSecurityOverlay(); return; }
+
+  const id = SEC.sanitize(document.getElementById('login-id').value);
+  const pass = SEC.sanitize(document.getElementById('login-pass').value);
+  if (!id || !pass) { toast('Please enter your ID and PIN.','error'); return; }
+
+  // Captcha check
+  if (SEC.loginAttempts >= 2) {
+    const cap = document.getElementById('captcha-input').value.toUpperCase().trim();
+    if (cap !== SEC.captchaCode) { toast('Incorrect security code. Please try again.','error'); refreshCaptcha(); return; }
+  }
 
   const btn = document.getElementById('btn-login');
-  btn.disabled = true;
-  btn.classList.add('loading');
-  btn.querySelector('span').textContent = 'Signing in...';
+  btn.disabled = true; btn.classList.add('loading');
+  btn.querySelector('span').textContent = 'Verifying...';
 
-  // Check saved config for Supabase, then redirect to portal
-  setTimeout(() => {
-    btn.disabled = false;
-    btn.classList.remove('loading');
+  try {
+    // Check admin shortcut first
+    if (CONFIG.supabaseUrl && CONFIG.supabaseKey) {
+      const users = await sbSelect('users', { eq:{member_id:id}, filter:'status=eq.active' });
+      if (users && users.length > 0) {
+        const user = users[0];
+        // Simple PIN hash check (in production use bcrypt via Supabase Edge Function)
+        const pinMatch = await verifyPin(pass, user.pin_hash || user.pin);
+        if (pinMatch) {
+          SEC.resetFails();
+          const session = { id:user.id, name:user.full_name, role:user.role, member_id:id, ts:Date.now() };
+          sessionStorage.setItem('isg_session', JSON.stringify(session));
+          localStorage.setItem('isg_login_id', id);
+          toast('Welcome back, '+user.full_name.split(' ')[0]+'! Redirecting...','success');
+          setTimeout(()=>{ window.location.href='portal.html'; }, 1200);
+          return;
+        } else {
+          SEC.recordFail();
+          toast('Incorrect PIN. Please try again.','error');
+        }
+      } else {
+        // Check if exists but inactive
+        const pending = await sbSelect('users', { eq:{member_id:id}, filter:'status=eq.pending' });
+        if (pending && pending.length > 0) {
+          toast('Your account is pending admin approval. Contact the Secretary.','info');
+        } else {
+          SEC.recordFail();
+          toast('Member ID not found or account inactive.','error');
+        }
+      }
+    } else {
+      // Demo fallback — ONLY for admin
+      const adminIds = ['admin','ssemakula','INT-ADMIN'];
+      if (adminIds.some(a=>id.toLowerCase().includes(a.toLowerCase())) && pass.length >= 4) {
+        SEC.resetFails();
+        localStorage.setItem('isg_login_id', id);
+        sessionStorage.setItem('isg_session', JSON.stringify({id:'admin-1',name:'SSEMAKULA FRANK',role:'admin',member_id:id,ts:Date.now()}));
+        toast('Welcome, Admin! Redirecting to portal...','success');
+        setTimeout(()=>{ window.location.href='portal.html'; }, 1200);
+      } else {
+        SEC.recordFail();
+        toast('Connect to live database in Portal Setup to enable member logins.','info');
+      }
+    }
+  } catch(e) {
+    toast('Login error: '+e.message,'error');
+  } finally {
+    btn.disabled=false; btn.classList.remove('loading');
     btn.querySelector('span').textContent = 'Sign In to Portal';
-    // In a full integration, authenticate against Supabase here.
-    // For now, pass the ID to the portal via localStorage and redirect.
-    localStorage.setItem('isg_login_id', id);
-    toast('Welcome back! Redirecting to portal...', 'success');
-    setTimeout(() => { window.location.href = 'portal.html'; }, 1200);
-  }, 1400);
+    refreshCaptcha();
+  }
 }
 
-// ─── MOMO MODAL ───
-function openMomo(context, network) {
-  momoContext.type = context;
-  momoContext.network = network;
+async function verifyPin(input, stored) {
+  // Simple comparison — upgrade to proper hash via Supabase Edge Function for production
+  if (!stored) return false;
+  if (stored.length > 20) {
+    // Stored as SHA-256 hex
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b=>b.toString(16).padStart(2,'0')).join('');
+    return hashHex === stored;
+  }
+  return input === stored;
+}
 
-  // Pre-fill amount for registration
+// ═══════════════════════════════════════════════════════════════
+// MOMO MODAL
+// ═══════════════════════════════════════════════════════════════
+let momoCtx = { type:'', network:'MTN' };
+
+function openMomo(context, network) {
+  momoCtx.type = context;
+  momoCtx.network = network;
+
   if (context === 'register') {
     document.getElementById('momo-title').textContent = 'Pay Registration Fees';
-    document.getElementById('momo-desc').textContent = 'UGX 12,000 covers your membership fee (5,000), Capital Reserve Fund (5,000), and savings booklet (2,000).';
+    document.getElementById('momo-desc').textContent = 'UGX 12,000 covers membership (5,000) + Capital Reserve (5,000) + booklet (2,000).';
     document.getElementById('momo-amount').value = '12000';
     document.getElementById('momo-amount').readOnly = true;
-    document.getElementById('momo-ref').value =
-      (document.getElementById('reg-fname').value + ' ' + document.getElementById('reg-lname').value).trim() || '';
+    document.getElementById('momo-purpose').value = 'registration';
+    const fname = SEC.sanitize(document.getElementById('reg-fname').value);
+    const lname = SEC.sanitize(document.getElementById('reg-lname').value);
+    document.getElementById('momo-ref').value = (fname+' '+lname).trim();
+    document.getElementById('momo-phone').value = SEC.sanitizePhone(document.getElementById('reg-phone').value);
   } else {
     document.getElementById('momo-title').textContent = 'Make a Payment';
-    document.getElementById('momo-desc').textContent = 'Enter your phone number to receive a payment prompt on your handset.';
-    const amt = document.getElementById('pay-amount')?.value;
-    document.getElementById('momo-amount').value = amt || '';
+    document.getElementById('momo-desc').textContent = 'You will receive a USSD prompt on your phone to authorise this payment.';
+    document.getElementById('momo-amount').value = SEC.sanitizeNum(document.getElementById('pay-amount').value) || '';
     document.getElementById('momo-amount').readOnly = false;
-    document.getElementById('momo-ref').value = document.getElementById('pay-id')?.value || '';
+    document.getElementById('momo-purpose').value = document.getElementById('pay-type').value;
+    document.getElementById('momo-ref').value = SEC.sanitize(document.getElementById('pay-id').value);
   }
-
-  // Pre-fill phone
-  const phone = document.getElementById('reg-phone')?.value || document.getElementById('momo-phone').value;
-  document.getElementById('momo-phone').value = phone;
 
   selectNetwork(network);
   document.getElementById('momo-status').className = 'momo-status';
@@ -744,106 +845,316 @@ function openMomo(context, network) {
   document.getElementById('momo-modal').classList.add('open');
 }
 
-function closeMomo() {
-  document.getElementById('momo-modal').classList.remove('open');
-}
+function closeMomo() { document.getElementById('momo-modal').classList.remove('open'); }
 
 function selectNetwork(net) {
-  momoContext.network = net;
-  document.getElementById('pill-mtn').classList.toggle('selected', net === 'MTN');
-  document.getElementById('pill-airtel').classList.toggle('selected', net === 'Airtel');
+  momoCtx.network = net;
+  document.getElementById('pill-mtn').classList.toggle('selected', net==='MTN');
+  document.getElementById('pill-airtel').classList.toggle('selected', net==='Airtel');
+  document.getElementById('merchant-display').innerHTML =
+    net==='MTN'
+      ? `MTN MoMo Recipient: <strong style="color:white;">${CONFIG.groupMerchantCode}</strong>`
+      : `Airtel Money Recipient: <strong style="color:white;">${CONFIG.groupPhone}</strong>`;
 }
 
-function submitMomo() {
-  const phone = document.getElementById('momo-phone').value.trim();
-  const amount = document.getElementById('momo-amount').value;
-  const ref = document.getElementById('momo-ref').value.trim();
+// ═══════════════════════════════════════════════════════════════
+// MOMO PAYMENT — Real API Integration
+// ═══════════════════════════════════════════════════════════════
+async function submitMomo() {
+  const phone = SEC.sanitizePhone(document.getElementById('momo-phone').value);
+  const amount = SEC.sanitizeNum(document.getElementById('momo-amount').value);
+  const ref = SEC.sanitize(document.getElementById('momo-ref').value);
+  const purpose = document.getElementById('momo-purpose').value;
 
-  if (!phone || !amount) { toast('Phone number and amount are required.', 'error'); return; }
-  if (Number(amount) < 1000) { toast('Minimum payment is UGX 1,000.', 'error'); return; }
+  if (!phone || !amount) { toast('Phone number and amount are required.','error'); return; }
+  if (amount < 1000) { toast('Minimum payment is UGX 1,000.','error'); return; }
+  if (!phone.match(/^(0|256|\+256)[0-9]{9}$/)) { toast('Enter a valid Uganda phone number.','error'); return; }
 
   const btn = document.getElementById('momo-submit-btn');
-  btn.disabled = true;
-  btn.classList.add('loading');
-
+  btn.disabled = true; btn.classList.add('loading');
   const statusEl = document.getElementById('momo-status');
   statusEl.className = 'momo-status pending';
-  statusEl.innerHTML = `<span class="spinner-sm"></span> Sending prompt to ${phone} via ${momoContext.network}...`;
+  statusEl.innerHTML = `<span class="spinner-sm"></span> Initiating ${momoCtx.network} payment prompt for ${formatPhone(phone)}...`;
 
-  // Simulate MoMo API call
-  // In production, call your backend which calls the MTN MoMo API or Airtel Money API
-  setTimeout(() => {
-    btn.disabled = false;
-    btn.classList.remove('loading');
+  // Normalise phone to 256XXXXXXXXX
+  const normPhone = normalizePhone(phone);
 
-    // Simulate success
-    statusEl.className = 'momo-status success';
-    statusEl.innerHTML = `✅ Payment prompt sent! Check your phone (${phone}) and enter your ${momoContext.network} PIN to complete. Reference: <strong>${ref||'ISGRP'}</strong>`;
+  try {
+    let txnRef, result;
 
-    toast(`${momoContext.network} payment prompt sent to ${phone}`, 'success');
-
-    // If this was a registration, also submit the form after a delay
-    if (momoContext.type === 'register') {
-      setTimeout(() => {
-        submitRegistration();
-      }, 3000);
+    if (momoCtx.network === 'MTN' && CONFIG.mtnApiUser && CONFIG.mtnSubscriptionKey) {
+      result = await initiateMTNPayment(normPhone, amount, ref, purpose);
+    } else if (momoCtx.network === 'Airtel' && CONFIG.airtelClientId) {
+      result = await initiateAirtelPayment(normPhone, amount, ref, purpose);
+    } else {
+      // API not yet configured — show setup instructions
+      statusEl.className = 'momo-status error';
+      statusEl.innerHTML = `⚠ MoMo API keys not configured yet.<br><br>
+        <strong>To enable live payments:</strong><br>
+        1. Get MTN MoMo API keys from <a href="https://momodeveloper.mtn.com" target="_blank" style="color:var(--gold-light)">momodeveloper.mtn.com</a><br>
+        2. Get Airtel Money keys from <a href="https://developers.airtel.africa" target="_blank" style="color:var(--gold-light)">developers.airtel.africa</a><br>
+        3. Enter them in <a href="portal.html" style="color:var(--gold-light)">Portal → Setup</a><br><br>
+        <em>Manual payment: Send UGX ${amount.toLocaleString()} to <strong style="color:white;">${CONFIG.groupPhone}</strong> and screenshot for the admin.</em>`;
+      btn.disabled=false; btn.classList.remove('loading');
+      return;
     }
-  }, 2500);
+
+    if (result.success) {
+      txnRef = result.txnRef;
+      statusEl.className = 'momo-status success';
+      statusEl.innerHTML = `✅ Payment prompt sent to ${formatPhone(normPhone)}!<br>Enter your ${momoCtx.network} PIN to complete.<br><small style="opacity:.7">Reference: ${txnRef}</small>`;
+      toast(`${momoCtx.network} payment prompt sent!`, 'success');
+
+      // Log to Supabase
+      await logTransactionToSupabase({ phone:normPhone, amount, ref, purpose, network:momoCtx.network, txnRef, status:'pending' });
+
+      // Notify admin
+      await notifyAdmins({ type:'payment_initiated', phone:normPhone, amount, ref, purpose, network:momoCtx.network, txnRef });
+
+      // If registration context, submit form
+      if (momoCtx.type === 'register') setTimeout(submitRegistration, 3000);
+    } else {
+      throw new Error(result.error || 'Payment initiation failed');
+    }
+  } catch(e) {
+    statusEl.className = 'momo-status error';
+    statusEl.innerHTML = `✗ Error: ${e.message}`;
+    toast('Payment error: '+e.message, 'error');
+  } finally {
+    btn.disabled=false; btn.classList.remove('loading');
+  }
 }
 
-function submitRegistration() {
-  const fname = document.getElementById('reg-fname').value.trim();
-  const lname = document.getElementById('reg-lname').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const phone = document.getElementById('reg-phone').value.trim();
-  const nid = document.getElementById('reg-nid').value.trim();
+// ── MTN MoMo Collections API ──
+async function initiateMTNPayment(phone, amount, ref, purpose) {
+  const txnRef = generateTxnId();
+  // Step 1: Get access token
+  const tokenRes = await fetch(`${CONFIG.mtnCollectionsUrl.replace('/collection/v1_0','')}/collection/token/`, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Basic ' + btoa(CONFIG.mtnApiUser + ':' + CONFIG.mtnApiKey),
+      'Ocp-Apim-Subscription-Key': CONFIG.mtnSubscriptionKey
+    }
+  });
+  if (!tokenRes.ok) throw new Error('MTN auth failed: '+tokenRes.status);
+  const { access_token } = await tokenRes.json();
 
-  if (!fname || !lname || !email) {
-    toast('Please fill in your name and email before submitting.', 'error');
-    return;
+  // Step 2: Request to pay
+  const payRes = await fetch(`${CONFIG.mtnCollectionsUrl}/requesttopay`, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer '+access_token,
+      'X-Reference-Id': txnRef,
+      'X-Target-Environment': CONFIG.mtnTargetEnv,
+      'Ocp-Apim-Subscription-Key': CONFIG.mtnSubscriptionKey,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      amount: String(amount),
+      currency: 'UGX',
+      externalId: txnRef,
+      payer: { partyIdType:'MSISDN', partyId: phone },
+      payerMessage: 'ISG: '+purpose,
+      payeeNote: 'The Intellectuals SG — '+ref
+    })
+  });
+  if (payRes.status !== 202) {
+    const e = await payRes.json().catch(()=>({}));
+    throw new Error(e.message || 'MTN request failed: '+payRes.status);
+  }
+  return { success:true, txnRef };
+}
+
+// ── Airtel Money Uganda API ──
+async function initiateAirtelPayment(phone, amount, ref, purpose) {
+  // Step 1: Get OAuth token
+  const tokenRes = await fetch(`${CONFIG.airtelBaseUrl}/auth/oauth2/token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ client_id:CONFIG.airtelClientId, client_secret:CONFIG.airtelClientSecret, grant_type:'client_credentials' })
+  });
+  if (!tokenRes.ok) throw new Error('Airtel auth failed');
+  const { access_token } = await tokenRes.json();
+
+  const txnRef = generateTxnId();
+  // Step 2: Collections payment request
+  const payRes = await fetch(`${CONFIG.airtelBaseUrl}/merchant/v1/payments/`, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer '+access_token,
+      'X-Country': CONFIG.airtelCountry,
+      'X-Currency': CONFIG.airtelCurrency,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      reference: txnRef,
+      subscriber: { country:CONFIG.airtelCountry, currency:CONFIG.airtelCurrency, msisdn:phone },
+      transaction: { amount:String(amount), country:CONFIG.airtelCountry, currency:CONFIG.airtelCurrency, id:txnRef }
+    })
+  });
+  const data = await payRes.json().catch(()=>({}));
+  if (!payRes.ok || data.status?.code !== '200') {
+    throw new Error(data.status?.message || 'Airtel payment failed: '+payRes.status);
+  }
+  return { success:true, txnRef };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LOG TO SUPABASE
+// ═══════════════════════════════════════════════════════════════
+async function logTransactionToSupabase({ phone, amount, ref, purpose, network, txnRef, status }) {
+  if (!CONFIG.supabaseUrl || !CONFIG.supabaseKey) return;
+  try {
+    await sbInsert('transactions', {
+      txn_ref: txnRef,
+      phone,
+      amount,
+      ref_name: ref,
+      purpose,
+      network,
+      status,
+      created_at: new Date().toISOString()
+    });
+  } catch(e) { console.warn('Supabase log failed:', e.message); }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NOTIFICATIONS — Email + WhatsApp
+// ═══════════════════════════════════════════════════════════════
+async function notifyAdmins({ type, phone, amount, ref, purpose, network, txnRef }) {
+  const msg = `💰 ISG PAYMENT ALERT\n${new Date().toLocaleString('en-UG')}\nType: ${purpose}\nAmount: UGX ${amount.toLocaleString()}\nPayer: ${ref}\nPhone: ${phone}\nNetwork: ${network}\nRef: ${txnRef}\nStatus: INITIATED — awaiting PIN confirmation`;
+
+  // Email via EmailJS
+  if (CONFIG.emailjsServiceId && CONFIG.emailjsPublicKey) {
+    try {
+      emailjs.init(CONFIG.emailjsPublicKey);
+      await emailjs.send(CONFIG.emailjsServiceId, CONFIG.emailjsTemplateId, {
+        to_email: CONFIG.notifyEmail,
+        subject: `[ISG] ${purpose} — UGX ${amount.toLocaleString()} from ${ref}`,
+        message: msg,
+        from_name: 'Intellectuals SG System',
+        txn_ref: txnRef, amount: amount.toLocaleString(), payer: ref, purpose, network, phone
+      });
+    } catch(e) { console.warn('Email notify failed:', e.message); }
   }
 
-  // Save pending registration in localStorage, admin will confirm in portal
-  const pending = JSON.parse(localStorage.getItem('isg_pending_registrations') || '[]');
-  pending.push({
-    full_name: fname + ' ' + lname,
-    email, phone, national_id: nid,
-    status: 'pending_payment_verification',
-    applied_at: new Date().toISOString()
-  });
-  localStorage.setItem('isg_pending_registrations', JSON.stringify(pending));
+  // WhatsApp via CallMeBot (free — register at callmebot.com/blog/free-api-whatsapp-messages/)
+  if (CONFIG.callmebotApiKey) {
+    try {
+      const encoded = encodeURIComponent(msg);
+      await fetch(`https://api.callmebot.com/whatsapp.php?phone=${CONFIG.notifyWhatsApp}&text=${encoded}&apikey=${CONFIG.callmebotApiKey}`);
+    } catch(e) { console.warn('WhatsApp notify failed:', e.message); }
+  }
+}
 
-  toast('Registration submitted! An admin will confirm your membership after payment verification.', 'success');
+// ═══════════════════════════════════════════════════════════════
+// REGISTRATION
+// ═══════════════════════════════════════════════════════════════
+async function submitRegistration() {
+  const fname = SEC.sanitize(document.getElementById('reg-fname').value);
+  const lname = SEC.sanitize(document.getElementById('reg-lname').value);
+  const email = SEC.sanitize(document.getElementById('reg-email').value);
+  const phone = SEC.sanitizePhone(document.getElementById('reg-phone').value);
+  const nid = SEC.sanitize(document.getElementById('reg-nid').value);
+  const pin = document.getElementById('reg-pin').value;
+  const pin2 = document.getElementById('reg-pin2').value;
+
+  if (!fname||!lname||!email) { toast('Please complete all required fields.','error'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { toast('Please enter a valid email address.','error'); return; }
+  if (pin && pin !== pin2) { toast('PINs do not match.','error'); return; }
+  if (pin && !/^[0-9]{6}$/.test(pin)) { toast('PIN must be exactly 6 digits.','error'); return; }
+
+  // Hash PIN before storing
+  let pinHash = pin;
+  if (pin) {
+    const enc = new TextEncoder().encode(pin);
+    const buf = await crypto.subtle.digest('SHA-256', enc);
+    pinHash = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+
+  const regData = {
+    full_name: fname+' '+lname,
+    email, phone, national_id: nid,
+    pin_hash: pinHash,
+    status: 'pending', // MUST be approved by admin
+    role: 'member',
+    applied_at: new Date().toISOString()
+  };
+
+  if (CONFIG.supabaseUrl && CONFIG.supabaseKey) {
+    try {
+      await sbInsert('pending_registrations', regData);
+      toast('Registration submitted! Admin will verify your account after payment confirmation.','success');
+      // Notify admin of new registration
+      await notifyAdmins({ type:'new_registration', phone, amount:12000, ref:regData.full_name, purpose:'registration', network:momoCtx.network, txnRef:'REG-'+Date.now() });
+    } catch(e) {
+      // Fallback to localStorage
+      storePendingLocally(regData);
+    }
+  } else {
+    storePendingLocally(regData);
+  }
   closeMomo();
 }
 
-function showForgot() {
-  toast('Contact the Secretary/Clerk at +256 756 199 065 to reset your PIN.', 'info');
+function storePendingLocally(data) {
+  const pending = JSON.parse(localStorage.getItem('isg_pending_registrations')||'[]');
+  pending.push(data);
+  localStorage.setItem('isg_pending_registrations', JSON.stringify(pending));
+  toast('Registration saved locally. Admin will review in the portal.','success');
 }
 
-// ─── TOAST ───
+function showForgot() {
+  toast('Contact the Secretary at +256 756 199 065 or +256 767 012 770 to reset your PIN.','info');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════════
+function normalizePhone(p) {
+  p = p.replace(/[\s\-]/g,'');
+  if (p.startsWith('+256')) return p.slice(1);
+  if (p.startsWith('0')) return '256'+p.slice(1);
+  if (p.startsWith('256')) return p;
+  return '256'+p;
+}
+function formatPhone(p) {
+  if (p.startsWith('256')&&p.length===12) return '+256 '+p.slice(3,6)+' '+p.slice(6,9)+' '+p.slice(9);
+  return p;
+}
+function generateTxnId() {
+  return 'ISG-'+Date.now()+'-'+Math.random().toString(36).slice(2,8).toUpperCase();
+}
+
 function toast(msg, type='info') {
-  const icons = { success:'✓', error:'✗', info:'ℹ' };
+  const icons = {success:'✓',error:'✗',info:'ℹ'};
   const t = document.createElement('div');
   t.className = `toast ${type}`;
   t.innerHTML = `<span>${icons[type]||'•'}</span> ${msg}`;
   document.getElementById('toast-root').appendChild(t);
-  setTimeout(() => t.remove(), 5000);
+  setTimeout(()=>t.remove(), 5500);
 }
 
 // Close modal on backdrop click
-document.getElementById('momo-modal').addEventListener('click', e => {
-  if (e.target === document.getElementById('momo-modal')) closeMomo();
+document.getElementById('momo-modal').addEventListener('click', e=>{
+  if(e.target===document.getElementById('momo-modal')) closeMomo();
 });
 
 // Scroll animations
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='none'; } });
-}, { threshold: 0.1 });
-document.querySelectorAll('.about-card,.how-card,.finance-card').forEach(el => {
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='none';} });
+}, {threshold:0.1});
+document.querySelectorAll('.about-card,.how-card,.finance-card').forEach(el=>{
   el.style.opacity='0'; el.style.transform='translateY(20px)';
   el.style.transition='opacity 0.5s ease, transform 0.5s ease';
   observer.observe(el);
+});
+
+// Prevent form submission on Enter key (anti-automation)
+document.addEventListener('keydown', e=>{
+  if (e.key==='Enter'&&document.activeElement.id==='captcha-input') {
+    e.preventDefault(); doLogin();
+  }
 });
 </script>
 </body>
